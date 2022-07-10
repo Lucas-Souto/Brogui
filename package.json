@@ -1,0 +1,27 @@
+{
+  "name": "brogui",
+  "version": "1.0.0",
+  "description": "Brogui é uma ferramenta para facilitar a criação do seu site de blogs.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Lucas-Souto/Brogui.git"
+  },
+  "keywords": [
+    "framework",
+    "blog",
+    "web"
+  ],
+  "author": "Lucas Souto",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Lucas-Souto/Brogui/issues"
+  },
+  "homepage": "https://github.com/Lucas-Souto/Brogui#readme",
+  "dependencies": {
+    "mysql": "^2.18.1"
+  }
+}
