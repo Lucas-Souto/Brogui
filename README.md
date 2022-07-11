@@ -7,7 +7,7 @@ Para começar, devemos criar as tabelas e definir em que banco de dados estamos 
 const brogui = require("brogui");
 const connectData = { host: 'localhost', user: 'root', database: 'my_db' };
 
-brogui.init(connectData); // Cria as tabelas, se não existem, e define a conecção.
+brogui.init(connectData); // Cria as tabelas, se não existem, e define a conexão.
 ```
 ## Users
 ```
