@@ -4,7 +4,7 @@
   "description": "Brogui é uma ferramenta para facilitar a criação do seu site de blogs.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node ./test.js"
   },
   "repository": {
     "type": "git",
@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/Lucas-Souto/Brogui#readme",
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "mysql": "^2.18.1"
   }
 }
