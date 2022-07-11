@@ -24,7 +24,7 @@ exports.insert = async (username, email, password, role = "user", callback = def
     const encrypted = await hash(password);
     const name = username.replace(/_/g, ' ');
     
-    db.run('INSERT INTO users (username, name, email, role, password) VALUES (?, ?, ?, ?, ?)', [username.toLowerCase(), name, email.toLowerCase(), role, encrypted], callback);
+    db.run('INSERT INTO users (username, name, email, role, password) VALUES (?, ?, ?, ?, ?)', [username.replace(/ /g, '').toLowerCase(), name, email.toLowerCase(), role, encrypted], callback);
 }
 
 exports.get = (user, byEmail = false, callback = defaultCallback) =>
