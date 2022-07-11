@@ -10,3 +10,4 @@ exports.init = (connectData) =>
 
 exports.users = require('./db/users');
 exports.posts = require('./db/posts');
+exports.comments = require('./db/comments');

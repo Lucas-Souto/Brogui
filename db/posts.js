@@ -1,3 +1,4 @@
+const dateToMysql = require('./dateToMysql');
 const Database = require('./Database');
 const db = new Database();
 const defaultCallback = (error, results, fields) => {};
@@ -7,21 +8,18 @@ function titleToLink(title)
     return title.replace(/ /g, "_").normalize('NFD').replace(/[\u0300-\u036f]/g, "").replace(/[^a-zA-Z0-9_]+/g, "").toLowerCase();
 }
 
-function dateToMysql()
+function getContains(fullLink, callback = defaultCallback)
 {
-    return new Date().toISOString().slice(0, 19).replace('T', ' ');
-}
+    const splited = fullLink.split('/');
 
-function getContains(author, link, callback = defaultCallback)
-{
-    db.run('SELECT * FROM posts WHERE author = ? AND link LIKE ?', [author, link + "%"], callback);
+    db.run('SELECT * FROM posts WHERE author = ? AND link LIKE ?', [splited[0], splited[1] + "%"], callback);
 }
 
 exports.insert = (author, title, content, cover = null, isDraft = true, callback = defaultCallback) =>
 {
     const link = titleToLink(title);
 
-    getContains(author, link, (error, rows) =>
+    getContains(`${author}/${link}`, (error, rows) =>
     {
         const concat = rows.length != 0 ? rows.length : '';
 
@@ -30,31 +28,37 @@ exports.insert = (author, title, content, cover = null, isDraft = true, callback
     });
 }
 
-exports.get = (author, link, callback = defaultCallback) =>
+exports.get = (fullLink, callback = defaultCallback) =>
 {
-    db.run(`SELECT Posts.author, Posts.link, Posts.title, Posts.cover, Posts.content, Posts.date, Posts.isDraft,
+    const splited = fullLink.split('/');
+
+    db.run(`SELECT Posts.id, Posts.author, Posts.link, Posts.title, Posts.cover, Posts.content, Posts.date, Posts.isDraft,
         Users.photo as authorPhoto, Users.name as authorName FROM posts 
         INNER JOIN users ON Posts.author = Users.username
-        WHERE author = ? AND link = ?`, [author, link], callback);
+        WHERE author = ? AND link = ?`, [splited[0], splited[1]], callback);
 }
 
 exports.search = (term, minDate = 0, limit = 10, callback = defaultCallback) =>
 {
-    db.run('SELECT author, title, link, content, cover, date FROM posts WHERE date > ? AND INSTR(title, ?) > 0 ORDER BY date LIMIT ?', [minDate, term, limit], callback);
+    db.run('SELECT id, author, title, link, content, cover, date FROM posts WHERE date > ? AND INSTR(title, ?) > 0 ORDER BY date LIMIT ?', [minDate, term, limit], callback);
 }
 
-exports.update = (author, link, newData, callback = defaultCallback) =>
+exports.update = (fullLink, newData, callback = defaultCallback) =>
 {
+    const splited = fullLink.split('/');
+
     db.run(`UPDATE posts
         SET title = IFNULL(?, title),
         content = IFNULL(?, content),
         cover = IFNULL(?, cover),
         isDraft = IFNULL(?, isDraft)
         WHERE author = ? AND link = ?`, 
-    [newData.title, newData.content, newData.cover, newData.isDraft, author, link], callback);
+    [newData.title, newData.content, newData.cover, newData.isDraft, splited[0], splited[1]], callback);
 }
 
-exports.delete = (author, link, callback = defaultCallback) =>
+exports.delete = (fullLink, callback = defaultCallback) =>
 {
-    db.run(`DELETE FROM posts WHERE author = ? AND link = ?`, [author, link], callback);
+    const splited = fullLink.split('/');
+
+    db.run(`DELETE FROM posts WHERE author = ? AND link = ?`, [splited[0], splited[1]], callback);
 }
