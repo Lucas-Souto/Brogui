@@ -41,7 +41,7 @@ class Database
     {
         this.run(`CREATE TABLE IF NOT EXISTS posts (
             id VARCHAR(36) PRIMARY KEY,
-            link VARCHAR(66) NOT NULL,
+            link VARCHAR(255) NOT NULL,
             author VARCHAR(32) NOT NULL,
             title VARCHAR(64) NOT NULL,
             content LONGTEXT NOT NULL,
@@ -62,7 +62,17 @@ class Database
             postId VARCHAR(36) NOT NULL,
             FOREIGN KEY (author) REFERENCES Users(username) ON UPDATE CASCADE ON DELETE CASCADE,
             FOREIGN KEY (postId) REFERENCES Posts(id) ON DELETE CASCADE
-        )`);
+        )`, [], () =>
+            this.run(`CREATE TABLE IF NOT EXISTS subcomments (
+                id VARCHAR(36) PRIMARY KEY,
+                author VARCHAR(32) NOT NULL,
+                content LONGTEXT NOT NULL,
+                date DATETIME NOT NULL,
+                mainId VARCHAR(36) NOT NULL,
+                FOREIGN KEY (author) REFERENCES Users(username) ON UPDATE CASCADE ON DELETE CASCADE,
+                FOREIGN KEY (mainId) REFERENCES Comments(id) ON DELETE CASCADE
+            )`)
+        );
     }
 }
 

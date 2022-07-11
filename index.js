@@ -9,3 +9,4 @@ exports.init = (connectData) =>
 }
 
 exports.users = require('./db/users');
+exports.posts = require('./db/posts');
