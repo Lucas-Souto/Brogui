@@ -9,7 +9,7 @@ const connectData = { host: 'localhost', user: 'root', database: 'my_db' };
 
 brogui.init(connectData); // Cria as tabelas, se não existem, e define a conexão.
 ```
-## Users
+## Usuários
 ```
 username VARCHAR(32),
 name VARCHAR(32) NOT NULL,
@@ -62,7 +62,7 @@ brogui.users.update('pessoinha123@gmail.com', true, { about: 'Nova descrição.'
 brogui.users.delete('pessoinha');
 ```
 
-## posts
+## Publicações
 ```
 id VARCHAR(36) PRIMARY KEY,
 link VARCHAR(255) NOT NULL,
