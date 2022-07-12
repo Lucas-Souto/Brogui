@@ -67,5 +67,5 @@ exports.getId = (fullLink, callback = defaultCallback) =>
 {
     const splited = fullLink.split('/');
 
-    db.run('SELECT id FROM posts WHERE author = ? AND link = ?', splited[0], splited[1], callback);
+    db.run('SELECT id FROM posts WHERE author = ? AND link = ?', [splited[0], splited[1]], callback);
 }

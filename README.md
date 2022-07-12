@@ -11,6 +11,7 @@ brogui.init(connectData); // Cria as tabelas, se não existem, e define a conex�
 ```
 ## Usuários
 ```
+/*
 username VARCHAR(32),
 name VARCHAR(32) NOT NULL,
 email VARCHAR(150),
@@ -19,6 +20,7 @@ photo VARCHAR(255),
 about VARCHAR(250),
 password VARCHAR(255) NOT NULL,
 PRIMARY KEY (username, email)
+*/
 ```
 ### -insert
 ```
@@ -64,6 +66,7 @@ brogui.users.delete('pessoinha');
 
 ## Publicações
 ```
+/*
 id VARCHAR(36) PRIMARY KEY,
 link VARCHAR(255) NOT NULL,
 author VARCHAR(32) NOT NULL,
@@ -72,6 +75,7 @@ content LONGTEXT NOT NULL,
 cover VARCHAR(255),
 date DATETIME NOT NULL,
 isDraft BOOLEAN NOT NULL DEFAULT 1
+*/
 ```
 ### -insert
 ```
@@ -125,36 +129,36 @@ brogui.posts.delete('pessoinha/postagem_legal');
 
 ## Comentários
 ```
+/*
 id VARCHAR(36) PRIMARY KEY,
 author VARCHAR(32) NOT NULL,
 content LONGTEXT NOT NULL,
 date DATETIME NOT NULL,
-postId/mainId VARCHAR(36) NOT NULL
+postId VARCHAR(36) NOT NULL,
+mainId VARCHAR(36) -> Comentário pai
+*/
 ```
 
 ### -insert
 ```
 // Insere um comentário novo.
-// Parâmetros: autor, conteúdo, id do post (null), id do comentário (null), callback
-// Se o [id do post] for diferente de null, o comentário será feito no post. Se o [id do comentário] for diferente de null, o comentário será feito dentro de outro comentário (um comentário filho não pode ter outros filhos).
-// Parâmetros: autor, conteúdo, id do post/comentário
+// Parâmetros: autor, conteúdo, id do post, id do comentário pai (null), callback
 
 brogui.comments.insert('pessoinha', 'olá', 'id');
 ```
 
 ### -list
 ```
-// Retorna uma lista com os comentários de um post.
-// Cada comentário terá uma propriedade 'subcomments' que terá um json com os comentários filhos.
-// Parâmetros: id do post, callback
+// Retorna uma lista com os comentários de um post/comentário.
+// Parâmetros: id do post, id do comentário pai (null), data mínima (0), limite (16), callback
 
-brogui.comments.list('id', (error, rows) => console.log(rows));
+brogui.comments.list('id', null, 0, 16, (error, rows) => console.log(rows));
 ```
 
 ### -delete
 ```
 // Deleta um comentário e os filhos dele.
-// Parâmetros: id do comentário, é o comentário pai (true), callback
+// Parâmetros: id do comentário, callback
 
-brogui.comments.delete('id', false);
+brogui.comments.delete('id');
 ```

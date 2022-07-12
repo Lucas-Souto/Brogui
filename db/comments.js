@@ -3,23 +3,17 @@ const Database = require('./Database');
 const db = new Database();
 const defaultCallback = (error, results, fields) => {};
 
-exports.insert = (author, content, postId = null, mainComment = null, callback = defaultCallback) =>
+exports.insert = (author, content, postId, mainId = null, callback = defaultCallback) =>
 {
-    if (postId != null && mainComment == null) db.run('INSERT INTO comments (id, author, content, date, postId) VALUES (uuid(), ?, ?, ?, ?)', [author, content, dateToMysql(), postId], callback);
-    else if (mainComment != null) db.run('INSERT INTO subcomments (id, author, content, date, mainId) VALUES (uuid(), ?, ?, ?, ?)', [author, content, dateToMysql(), mainComment], callback);
+    db.run('INSERT INTO comments (id, author, content, date, postId, mainId) VALUES (uuid(), ?, ?, ?, ?, ?)', [author, content, dateToMysql(), postId, mainId], callback);
 }
 
-exports.list = (postId, callback = defaultCallback) =>
+exports.list = (postId, mainId = null, minDate = 0, limit = 16, callback = defaultCallback) =>
 {
-    db.run(`SELECT comment.*, 
-        CONCAT("[", GROUP_CONCAT(CONCAT('{"id":"', sub.id, '","author":"', sub.author, '","content":"', sub.content, '"}')), "]") as subcomments
-        FROM comments comment
-        LEFT JOIN subcomments sub ON (sub.mainId = comment.id)
-        WHERE postId = ?`, 
-    [postId], callback);
+    db.run(`SELECT * FROM comments WHERE date > ? AND postId = ? AND (mainId = ? OR mainId IS NULL) ORDER BY date LIMIT ?`, [minDate, postId, mainId, limit], callback);
 }
 
-exports.delete = (id, isMain = true, callback = defaultCallback) =>
+exports.delete = (id, callback = defaultCallback) =>
 {
-    db.run(`DELETE FROM ${ isMain ? 'comments' : 'subcomments' } WHERE id = ?`, [id], callback);
+    db.run(`DELETE FROM comments WHERE id = ? OR mainId = ?`, [id, id], callback);
 }
