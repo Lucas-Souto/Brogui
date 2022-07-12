@@ -2,7 +2,11 @@
 Brogui é uma ferramenta para facilitar a criação do seu site de blogs.
 
 ## Preparando terreno
-Para começar, devemos criar as tabelas e definir em que banco de dados estamos entrando:
+1º passo: Instale o pacote:
+```
+> npm install brogui
+```
+2º passo: Para começar, devemos criar as tabelas e definir em que banco de dados estamos entrando:
 ```
 const brogui = require("brogui");
 const connectData = { host: 'localhost', user: 'root', database: 'my_db' };
