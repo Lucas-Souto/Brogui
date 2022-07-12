@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "Brogui é uma ferramenta para facilitar a criação do seu site de blogs.",
   "main": "index.js",
-  "scripts": {
-    "test": "node ./test.js"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Lucas-Souto/Brogui.git"
