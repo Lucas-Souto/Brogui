@@ -4,12 +4,12 @@ class Database
 {
     static connectData;
 
-    initializeTables()
+    static initializeTables(then = () => {})
     {
-        this.#createUsersTable(() => this.#createPostsTable(() => this.#createCommentsTable()));
+        this.#createUsersTable(() => this.#createPostsTable(() => this.#createCommentsTable(then)));
     }
 
-    run(sql, params = [], callback = (error, results, fields) => {})
+    static run(sql, params = [], callback = (error, results, fields) => {})
     {
         const connection = mysql.createConnection(Database.connectData);
 
@@ -23,7 +23,7 @@ class Database
         connection.end();
     }
 
-    #createUsersTable = (after) =>
+    static #createUsersTable = (then) =>
     {
         this.run(`CREATE TABLE IF NOT EXISTS users (
             username VARCHAR(32),
@@ -34,10 +34,10 @@ class Database
             about VARCHAR(250),
             password VARCHAR(255) NOT NULL,
             PRIMARY KEY (username, email)
-        )`, [], after);
+        )`, [], then);
     }
 
-    #createPostsTable = (after) =>
+    static #createPostsTable = (then) =>
     {
         this.run(`CREATE TABLE IF NOT EXISTS posts (
             id VARCHAR(36) PRIMARY KEY,
@@ -49,10 +49,10 @@ class Database
             date DATETIME NOT NULL,
             isDraft BOOLEAN NOT NULL DEFAULT 1,
             FOREIGN KEY (author) REFERENCES Users(username) ON UPDATE CASCADE ON DELETE CASCADE
-        )`, [], after);
+        )`, [], then);
     }
 
-    #createCommentsTable = () =>
+    static #createCommentsTable = (then) =>
     {
         this.run(`CREATE TABLE IF NOT EXISTS comments (
             id VARCHAR(36) PRIMARY KEY,
@@ -63,7 +63,7 @@ class Database
             mainId VARCHAR(36),
             FOREIGN KEY (author) REFERENCES Users(username) ON UPDATE CASCADE ON DELETE CASCADE,
             FOREIGN KEY (postId) REFERENCES Posts(id) ON DELETE CASCADE
-        )`);
+        )`, [], then);
     }
 }
 

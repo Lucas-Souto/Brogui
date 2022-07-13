@@ -1,11 +1,10 @@
-const Database = require('./db/Database');
+const db = require('./db/Database');
 
-exports.Database = Database;
+exports.Database = db;
 
 exports.init = (connectData) =>
 {
-    const db = new Database();
-    Database.connectData = connectData;
+    db.connectData = connectData;
 
     db.initializeTables();
 }

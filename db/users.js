@@ -1,7 +1,6 @@
-const Database = require('./Database');
+const db = require('./Database');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
-const db = new Database();
 const defaultCallback = (error, results, fields) => {};
 
 async function hash(password)

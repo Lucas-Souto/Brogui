@@ -179,7 +179,6 @@ brogui.comments.delete('id');
 Caso queira fazer funções novas específicas para o seu caso, a classe Database possui o básico:
 ```
 brogui.init({ host: 'localhost', user: 'root', database: 'my_db' });
-const db = new brogui.Database();
 
-db.run('SELECT * FROM posts WHERE author = ?', ['pessoinha'], callback = (error, results, fields) => console.log(error, results, fields));
+brogui.Database.run('SELECT * FROM posts WHERE author = ?', ['pessoinha'], callback = (error, results, fields) => console.log(error, results, fields));
 ```

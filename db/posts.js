@@ -1,6 +1,5 @@
 const dateToMysql = require('./dateToMysql');
-const Database = require('./Database');
-const db = new Database();
+const db = require('./Database');
 const defaultCallback = (error, results, fields) => {};
 
 function titleToLink(title)
