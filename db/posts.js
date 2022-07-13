@@ -32,7 +32,7 @@ exports.get = (fullLink, callback = defaultCallback) =>
 {
     const splited = fullLink.split('/');
 
-    db.run(`SELECT Posts.id, Posts.author, Posts.link, Posts.title, Posts.cover, Posts.content, Posts.date, Posts.isDraft,
+    db.run(`SELECT Posts.*,
         Users.photo as authorPhoto, Users.name as authorName FROM posts 
         INNER JOIN users ON Posts.author = Users.username
         WHERE author = ? AND link = ?`, [splited[0], splited[1]], callback);
@@ -40,7 +40,20 @@ exports.get = (fullLink, callback = defaultCallback) =>
 
 exports.search = (term, minDate = 0, limit = 10, callback = defaultCallback) =>
 {
-    db.run('SELECT id, author, title, link, content, cover, date FROM posts WHERE date > ? AND INSTR(title, ?) > 0 ORDER BY date LIMIT ?', [minDate, term, limit], callback);
+    db.run(`SELECT Posts.*,
+        Users.photo as authorPhoto, Users.name as authorName FROM posts 
+        INNER JOIN users ON Posts.author = Users.username
+        WHERE date > ? AND INSTR(title, ?) > 0 ORDER BY date LIMIT ?`, 
+    [minDate, term, limit], callback);
+}
+
+exports.list = (minDate = 0, limit = 10, callback = defaultCallback) =>
+{
+    db.run(`SELECT Posts.*,
+        Users.photo as authorPhoto, Users.name as authorName FROM posts 
+        INNER JOIN users ON Posts.author = Users.username
+        WHERE date > ? ORDER BY date LIMIT ?`,
+    [minDate, limit], callback);
 }
 
 exports.update = (fullLink, newData, callback = defaultCallback) =>

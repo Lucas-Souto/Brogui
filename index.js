@@ -1,5 +1,7 @@
 const Database = require('./db/Database');
 
+exports.Database = Database;
+
 exports.init = (connectData) =>
 {
     const db = new Database();

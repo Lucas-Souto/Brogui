@@ -113,6 +113,14 @@ brogui.posts.getId('pessoinha/postagem_legal', (error, rows) => console.log(rows
 brogui.posts.search('legal', 0, 10, (error, rows) => console.log(rows));
 ```
 
+### -list
+```
+// Retorna uma lista de 'X' publicações desde data 'Y'.
+// Parâmetros: data mínima (0), limite (10), callback
+
+brogui.posts.list(0, 10, (error, rows) => console.log(rows));
+```
+
 ### -update
 ```
 // Atualiza o post.
@@ -165,4 +173,13 @@ brogui.comments.list('id', null, 0, 16, (error, rows) => console.log(rows));
 // Parâmetros: id do comentário, callback
 
 brogui.comments.delete('id');
+```
+
+## Database
+Caso queira fazer funções novas específicas para o seu caso, a classe Database possui o básico:
+```
+brogui.init({ host: 'localhost', user: 'root', database: 'my_db' });
+const db = new brogui.Database();
+
+db.run('SELECT * FROM posts WHERE author = ?', ['pessoinha'], callback = (error, results, fields) => console.log(error, results, fields));
 ```
