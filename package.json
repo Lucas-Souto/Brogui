@@ -1,6 +1,6 @@
 {
   "name": "brogui",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Brogui é uma ferramenta para facilitar a criação do seu site de blogs.",
   "main": "index.js",
   "repository": {

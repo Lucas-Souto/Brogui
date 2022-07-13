@@ -2,11 +2,11 @@ const db = require('./db/Database');
 
 exports.Database = db;
 
-exports.init = (connectData) =>
+exports.init = (connectData, then = () => {}) =>
 {
     db.connectData = connectData;
 
-    db.initializeTables();
+    db.initializeTables(then);
 }
 
 exports.users = require('./db/users');
