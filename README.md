@@ -122,6 +122,22 @@ brogui.posts.search('legal', 0, 10, (error, rows) => console.log(rows));
 brogui.posts.list(0, 10, (error, rows) => console.log(rows));
 ```
 
+### -latest
+```
+// Retorna as últimas 'X' publicações.
+// Parâmetros: limite (10), callback
+
+brogui.posts.latest(10, (error, rows) => console.log(rows));
+```
+
+### -byAuthor
+```
+// Retorna 'X' publicações de um autor 'Y' até a data 'Z'.
+// Parâmetros: autor, limite (10), data máxima (0), callback
+
+brogui.posts.byAuthor('pessoinha', 10, 0, (error, rows) => console.log(rows));
+```
+
 ### -update
 ```
 // Atualiza o post.
@@ -191,4 +207,9 @@ brogui.init({ host: 'localhost', user: 'root', database: 'my_db' }, () =>
 brogui.Database.connectData = { host: 'localhost', user: 'root', database: 'my_db' };
 
 brogui.Database.run('SELECT * FROM posts WHERE author = ?', ['pessoinha'], callback = (error, results, fields) => console.log(error, results, fields));
+```
+
+## dateToMysql
+```
+const date = dateToMysql(); // Retorna a data atual no padrão DATETIME.
 ```

@@ -42,7 +42,7 @@ exports.search = (term, minDate = 0, limit = 10, callback = defaultCallback) =>
     db.run(`SELECT Posts.*,
         Users.photo as authorPhoto, Users.name as authorName FROM posts 
         INNER JOIN users ON Posts.author = Users.username
-        WHERE date > ? AND INSTR(title, ?) > 0 ORDER BY date LIMIT ?`, 
+        WHERE date >= ? AND INSTR(title, ?) > 0 ORDER BY date LIMIT ?`, 
     [minDate, term, limit], callback);
 }
 
@@ -51,8 +51,28 @@ exports.list = (minDate = 0, limit = 10, callback = defaultCallback) =>
     db.run(`SELECT Posts.*,
         Users.photo as authorPhoto, Users.name as authorName FROM posts 
         INNER JOIN users ON Posts.author = Users.username
-        WHERE date > ? ORDER BY date LIMIT ?`,
+        WHERE date >= ? ORDER BY date LIMIT ?`,
     [minDate, limit], callback);
+}
+
+exports.latest = (limit = 10, callback = defaultCallback) =>
+{
+    db.run(`SELECT Posts.*,
+        Users.photo as authorPhoto, Users.name as authorName FROM posts 
+        INNER JOIN users ON Posts.author = Users.username
+        ORDER BY date DESC LIMIT ?`,
+    [limit], callback);
+}
+
+exports.byAuthor = (author, limit = 10, maxDate = 0, callback = defaultCallback) =>
+{
+    if (maxDate = 0) maxDate = dateToMysql();
+
+    db.run(`SELECT Posts.*,
+        Users.photo as authorPhoto, Users.name as authorName FROM posts 
+        INNER JOIN users ON Posts.author = Users.username
+        WHERE Posts.author = ? AND date <= ? ORDER BY date DESC LIMIT ?`,
+    [author, maxDate, limit], callback);
 }
 
 exports.update = (fullLink, newData, callback = defaultCallback) =>

@@ -12,3 +12,5 @@ exports.init = (connectData, then = () => {}) =>
 exports.users = require('./db/users');
 exports.posts = require('./db/posts');
 exports.comments = require('./db/comments');
+
+exports.dateToMysql = require('./db/dateToMysql');
