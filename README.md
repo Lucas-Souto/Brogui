@@ -130,6 +130,14 @@ brogui.posts.list(0, 10, (error, rows) => console.log(rows));
 brogui.posts.latest(10, 0, (error, rows) => console.log(rows));
 ```
 
+### -latestByTag
+```
+// Retorna as últimas 'X' publicações com as tags 'Y' até a data 'Z'.
+// Parâmetros: tags, limite (10), data máxima (0 = data atual), callback
+
+brogui.posts.latestByTag('tecnologia', 10, 0, (error, rows) => console.log(rows));
+```
+
 ### -byAuthor
 ```
 // Retorna 'X' publicações de um autor 'Y' até a data 'Z'.

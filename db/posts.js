@@ -66,6 +66,17 @@ exports.latest = (limit = 10, maxDate = 0, callback = defaultCallback) =>
     [maxDate, limit], callback);
 }
 
+exports.latestByTag = (tags, limit = 10, maxDate = 0, callback = defaultCallback) =>
+{
+    if (maxDate == 0) maxDate = dateToMysql();
+    
+    db.run(`SELECT Posts.*,
+        Users.photo as authorPhoto, Users.name as authorName FROM posts 
+        INNER JOIN users ON Posts.author = Users.username
+        WHERE date <= ? AND INSTR(tags, ?) > 0 ORDER BY date DESC LIMIT ?`,
+    [maxDate, tags, limit], callback);
+}
+
 exports.byAuthor = (author, limit = 10, maxDate = 0, callback = defaultCallback) =>
 {
     if (maxDate == 0) maxDate = dateToMysql();
