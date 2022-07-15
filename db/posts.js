@@ -55,18 +55,20 @@ exports.list = (minDate = 0, limit = 10, callback = defaultCallback) =>
     [minDate, limit], callback);
 }
 
-exports.latest = (limit = 10, callback = defaultCallback) =>
+exports.latest = (limit = 10, maxDate = 0, callback = defaultCallback) =>
 {
+    if (maxDate == 0) maxDate = dateToMysql();
+    
     db.run(`SELECT Posts.*,
         Users.photo as authorPhoto, Users.name as authorName FROM posts 
         INNER JOIN users ON Posts.author = Users.username
-        ORDER BY date DESC LIMIT ?`,
-    [limit], callback);
+        WHERE date <= ? ORDER BY date DESC LIMIT ?`,
+    [maxDate, limit], callback);
 }
 
 exports.byAuthor = (author, limit = 10, maxDate = 0, callback = defaultCallback) =>
 {
-    if (maxDate = 0) maxDate = dateToMysql();
+    if (maxDate == 0) maxDate = dateToMysql();
 
     db.run(`SELECT Posts.*,
         Users.photo as authorPhoto, Users.name as authorName FROM posts 

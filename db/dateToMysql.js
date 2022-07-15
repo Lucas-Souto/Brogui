@@ -1,4 +1,4 @@
-module.exports = function dateToMysql()
+module.exports = function dateToMysql(date = null)
 {
-    return new Date().toISOString().slice(0, 19).replace('T', ' ');
+    return (date == null ? new Date() : date).toISOString().slice(0, 19).replace('T', ' ');
 }

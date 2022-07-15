@@ -124,16 +124,16 @@ brogui.posts.list(0, 10, (error, rows) => console.log(rows));
 
 ### -latest
 ```
-// Retorna as últimas 'X' publicações.
-// Parâmetros: limite (10), callback
+// Retorna as últimas 'X' publicações até a data 'Y'.
+// Parâmetros: limite (10), data máxima (0 = data atual), callback
 
-brogui.posts.latest(10, (error, rows) => console.log(rows));
+brogui.posts.latest(10, 0, (error, rows) => console.log(rows));
 ```
 
 ### -byAuthor
 ```
 // Retorna 'X' publicações de um autor 'Y' até a data 'Z'.
-// Parâmetros: autor, limite (10), data máxima (0), callback
+// Parâmetros: autor, limite (10), data máxima (0 = data atual), callback
 
 brogui.posts.byAuthor('pessoinha', 10, 0, (error, rows) => console.log(rows));
 ```
@@ -211,5 +211,6 @@ brogui.Database.run('SELECT * FROM posts WHERE author = ?', ['pessoinha'], callb
 
 ## dateToMysql
 ```
-const date = dateToMysql(); // Retorna a data atual no padrão DATETIME.
+const date = dateToMysql(); // Retorna a data atual no padrão DATETIME UTC.
+const otherDate = dateToMysql(new Date(1995, 11, 17, 3, 24, 0)); // Retorna a data no padrão DATETIME (1995-12-17 05:24:00) UTC.
 ```
