@@ -46,6 +46,15 @@ exports.search = (term, minDate = 0, limit = 10, callback = defaultCallback) =>
     [minDate, term, limit], callback);
 }
 
+exports.searchWithTag = (term, tags, minDate = 0, limit = 10, callback = defaultCallback) =>
+{
+    db.run(`SELECT Posts.*,
+        Users.photo as authorPhoto, Users.name as authorName FROM posts 
+        INNER JOIN users ON Posts.author = Users.username
+        WHERE date >= ? AND (INSTR(title, ?) > 0 OR INSTR(tags, ?) > 0) ORDER BY date LIMIT ?`, 
+    [minDate, term, tags, limit], callback);
+}
+
 exports.list = (minDate = 0, limit = 10, callback = defaultCallback) =>
 {
     db.run(`SELECT Posts.*,

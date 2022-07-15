@@ -114,6 +114,14 @@ brogui.posts.getId('pessoinha/postagem_legal', (error, rows) => console.log(rows
 brogui.posts.search('legal', 0, 10, (error, rows) => console.log(rows));
 ```
 
+### -searchWithTag
+```
+// Retorna uma lista de 'X' publicações desde data 'Y' que tenham um termo 'Z' no seu título ou tenham as tags 'W'.
+// Parâmetros: termo, tags, data mínima (0), limite (10), callback
+
+brogui.posts.search('legal', 'tecnologia', 0, 10, (error, rows) => console.log(rows));
+```
+
 ### -list
 ```
 // Retorna uma lista de 'X' publicações desde data 'Y'.
