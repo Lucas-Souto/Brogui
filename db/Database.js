@@ -46,6 +46,7 @@ class Database
             title VARCHAR(64) NOT NULL,
             content LONGTEXT NOT NULL,
             cover VARCHAR(255),
+            tags TEXT,
             date DATETIME NOT NULL,
             isDraft BOOLEAN NOT NULL DEFAULT 1,
             FOREIGN KEY (author) REFERENCES Users(username) ON UPDATE CASCADE ON DELETE CASCADE

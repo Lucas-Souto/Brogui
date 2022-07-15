@@ -77,6 +77,7 @@ author VARCHAR(32) NOT NULL,
 title VARCHAR(64) NOT NULL,
 content LONGTEXT NOT NULL,
 cover VARCHAR(255),
+tags TEXT,
 date DATETIME NOT NULL,
 isDraft BOOLEAN NOT NULL DEFAULT 1
 */
@@ -84,7 +85,7 @@ isDraft BOOLEAN NOT NULL DEFAULT 1
 ### -insert
 ```
 // Insere uma publicação nova.
-// Parâmetros: autor, título, conteúdo, capa (null), é um rascunho (true), callback
+// Parâmetros: autor, título, conteúdo, capa (null), tags (null), é um rascunho (true), callback
 
 brogui.posts.insert('pessoinha', 'Postagem legal', 'Bem vindo ao meu blog!');
 ```
@@ -126,7 +127,7 @@ brogui.posts.list(0, 10, (error, rows) => console.log(rows));
 // Atualiza o post.
 // Se uma chave não for preenchida, o valor dela não mudará.
 // Parâmetros: link, novos dados: { chave: valor }, callback
-// Chaves: title, content, cover, isDraft
+// Chaves: title, link, content, cover, tags, isDraft
 
 brogui.posts.update('pessoinha/postagem_legal', { isDraft: false });
 ```

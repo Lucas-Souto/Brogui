@@ -11,10 +11,10 @@ function getContains(fullLink, callback = defaultCallback)
 {
     const splited = fullLink.split('/');
 
-    db.run('SELECT * FROM posts WHERE author = ? AND link LIKE ?', [splited[0], splited[1] + "%"], callback);
+    db.run('SELECT author, link FROM posts WHERE author = ? AND link LIKE ?', [splited[0], splited[1] + "%"], callback);
 }
 
-exports.insert = (author, title, content, cover = null, isDraft = true, callback = defaultCallback) =>
+exports.insert = (author, title, content, cover = null, tags = null, isDraft = true, callback = defaultCallback) =>
 {
     const link = titleToLink(title);
 
@@ -22,8 +22,8 @@ exports.insert = (author, title, content, cover = null, isDraft = true, callback
     {
         const concat = rows.length != 0 ? rows.length : '';
 
-        db.run('INSERT INTO posts (id, link, author, title, content, cover, date, isDraft) VALUES(uuid(), CONCAT(?, ?), ?, ?, ?, ?, ?, ?)', 
-        [link, concat, author, title, content, cover, dateToMysql(), isDraft], callback);
+        db.run('INSERT INTO posts (id, link, author, title, content, cover, tags, date, isDraft) VALUES(uuid(), CONCAT(?, ?), ?, ?, ?, ?, ?, ?, ?)', 
+        [link, concat, author, title, content, cover, tags, dateToMysql(), isDraft], callback);
     });
 }
 
@@ -61,11 +61,13 @@ exports.update = (fullLink, newData, callback = defaultCallback) =>
 
     db.run(`UPDATE posts
         SET title = IFNULL(?, title),
+        link = IFNULL(?, link),
         content = IFNULL(?, content),
         cover = IFNULL(?, cover),
+        tags = IFNULL(?, tags),
         isDraft = IFNULL(?, isDraft)
         WHERE author = ? AND link = ?`, 
-    [newData.title, newData.content, newData.cover, newData.isDraft, splited[0], splited[1]], callback);
+    [newData.title, newData.link, newData.content, newData.cover, newData.tags, newData.isDraft, splited[0], splited[1]], callback);
 }
 
 exports.delete = (fullLink, callback = defaultCallback) =>
